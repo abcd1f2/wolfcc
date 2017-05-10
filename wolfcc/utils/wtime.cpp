@@ -1,7 +1,15 @@
-#include "wtime.h"
+#include "utils/wtime.h"
 #include <stdio.h>
 
 /* Implementation */
+
+uint32_t get_stime(void)
+{
+    timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec;
+}
+
 int64_t get_ustime(void) {
     timeval tv;
     int64_t ust;

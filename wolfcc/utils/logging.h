@@ -12,7 +12,7 @@ enum severity
     LOG_MAX
 };
 
-static const char logLevelMap[] = { "DEBUG", "INFO", "WARN", "ERR", "FATAL" };
+static const char *logLevelMap[] = { "DEBUG", "INFO", "WARN", "ERR", "FATAL" };
 
 class Log
 {
@@ -26,7 +26,7 @@ public:
     static void Printf(int level, const char *file, int32_t line, const char *fmt, ...);
 };
 
-#define LOG(s, ...) \
-    (s < g_wolfserver.log_level) ? (void) 0 : Log::Printf(s, __FILE__, __LINE__, ...)
+#define log(p, fmt, ...) \
+    (p < g_wolfserver.log_level) ? (void) 0 : Log::Printf(p, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
 #endif

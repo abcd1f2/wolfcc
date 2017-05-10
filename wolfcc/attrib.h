@@ -1,9 +1,9 @@
 #ifndef __WOLFCC_ATTRIB_H__
 #define __WOLFCC_ATTRIB_H__
-
 #include <sys/types.h>
 #include <vector>
 #include <string>
+#include <stdint.h>
 
 struct ServerAttri
 {
@@ -30,6 +30,10 @@ struct ServerAttri
     std::string log_file;
     bool daemonize;
     std::string version;
+
+    /* Limits */
+    uint32_t maxclients;   /* Max number of simultaneous clients */
+    uint64_t maxmemory;   /* Max number of memory bytes to use */
 };
 
 struct ClientAttri

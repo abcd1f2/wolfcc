@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "servermanager.h"
+#include "util/logging.h"
 
 int main(int argc, char **argv)
 {
@@ -8,6 +9,8 @@ int main(int argc, char **argv)
         serverm.Stop();
     }
 
+    log(LOG_INFO, "start server");
     serverm.Start();
+    serverm.Stop();
     return 0;
 }

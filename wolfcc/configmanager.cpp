@@ -1,7 +1,7 @@
 #include <libconfig.h++>
 #include "configmanager.h"
 #include "attrib.h"
-#include "logging.h"
+#include "utils/logging.h"
 
 using namespace libconfig;
 
@@ -37,7 +37,7 @@ bool ServerConfig::LoadConfig()
     }
     catch (const std::exception &e)
     {
-        LOG(LOG_FATAL, "config error %s", e.what());
+        log(LOG_FATAL, "config error %s", e.what());
         return false;
     }
     
@@ -53,7 +53,7 @@ bool ServerConfig::LoadConfig()
         int port;
         if (!server[i].lookupValue("addr", add) ||
             !server[i].lookupValue("port", port)) {
-            LOG(LOG_FATAL, "read addr and port error");
+            log(LOG_FATAL, "read addr and port error");
             return false;
         }
 
