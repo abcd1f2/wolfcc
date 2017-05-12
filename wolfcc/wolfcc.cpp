@@ -1,16 +1,21 @@
-#include <stdio.h>
-#include "servermanager.h"
-#include "util/logging.h"
+﻿#include <stdio.h>
+#include "serverapp.h"
+#include "utils/logging.h"
+#include "utils/daemonize.h"
 
 int main(int argc, char **argv)
 {
-    ServerManager serverm;
-    if (!serverm.Init()) {
-        serverm.Stop();
+#if 0
+    Daemon::daemonize();
+#endif
+
+    ServerApp serverapp;
+    if (!serverapp.Init()) {
+        serverapp.Stop();
     }
 
     log(LOG_INFO, "start server");
-    serverm.Start();
-    serverm.Stop();
+    serverapp.Start();
+    serverapp.Stop();
     return 0;
 }

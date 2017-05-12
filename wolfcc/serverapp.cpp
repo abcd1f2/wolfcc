@@ -1,20 +1,20 @@
-#include "servermanager.h"
+#include "serverapp.h"
 #include "utils/logging.h"
-#include "nets/epollevent.h"
+#include "nets/addressfilteracceptor.h"
 
-ServerManager::ServerManager(const std::string& config_file):
+ServerApp::ServerApp(const std::string& config_file):
     config_file_(config_file),
     server_config_(config_file)
 {
 
 }
 
-ServerManager::~ServerManager()
+ServerApp::~ServerApp()
 {
 
 }
 
-bool ServerManager::Init()
+bool ServerApp::Init()
 {
     if (!InitConfig()) {
         log(LOG_FATAL, "init config error");
@@ -44,7 +44,7 @@ bool ServerManager::Init()
     return true;
 }
 
-bool ServerManager::InitConfig()
+bool ServerApp::InitConfig()
 {
     //init config
     if (!server_config_.LoadConfig()) {
@@ -55,8 +55,10 @@ bool ServerManager::InitConfig()
     return true;
 }
 
-bool ServerManager::InitNet()
+bool ServerApp::InitNet()
 {
+    accept_p_ = new AddressFilteredAcceptor(server_config_.bindaddr_, );
+
     //init server net
     net_manager_p_ = new NetManager(new EpollEvent());
 
@@ -68,30 +70,30 @@ bool ServerManager::InitNet()
     return true;
 }
 
-bool ServerManager::InitDB()
+bool ServerApp::InitDB()
 {
     // load db 
     return true;
 }
 
-bool ServerManager::InitServer()
+bool ServerApp::InitServer()
 {
     // init server
     return true;
 }
 
-bool ServerManager::InitCluster()
+bool ServerApp::InitCluster()
 {
     //init cluster
     return true;
 }
 
-void ServerManager::Start()
+void ServerApp::Start()
 {
     net_manager_p_->StartMainLoop();
 }
 
-void ServerManager::Stop()
+void ServerApp::Stop()
 {
 
 }

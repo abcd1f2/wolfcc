@@ -2,13 +2,13 @@
 #define __WOLFCC_SERVERMANAGER_H__
 #include <string>
 #include "configmanager.h"
-#include "netmanager.h"
+#include "nets/addressfilteracceptor.h"
 
-class ServerManager
+class ServerApp
 {
 public:
-    ServerManager(const std::string& config_file);
-    ~ServerManager();
+    ServerApp(const std::string& config_file);
+    ~ServerApp();
 
 public:
     bool Init();
@@ -25,7 +25,7 @@ private:
 private:
     const std::string config_file_;
     ServerConfig server_config_;
-    NetManager *net_manager_p_;
+    AddressFilteredAcceptor *accept_p_;
 };
 
 #endif

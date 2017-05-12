@@ -2,7 +2,6 @@
 #define __WOLFCC_NETMANAGER_H__
 #include <stdint.h>
 #include <string>
-#include "nets/netbase.h"
 #include "nets/networkbase.h"
 
 class NetEvent;
