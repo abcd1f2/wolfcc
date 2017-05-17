@@ -1,4 +1,4 @@
-#ifndef __WOLFCC_HANDLE_H__
+﻿#ifndef __WOLFCC_HANDLE_H__
 #define __WOLFCC_HANDLE_H__
 
 struct Handle

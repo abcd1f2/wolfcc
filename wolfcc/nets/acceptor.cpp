@@ -8,6 +8,7 @@
 #include "nets/inetaddr.h"
 #include "nets/unixaddr.h"
 #include "utils/logging.h"
+#include "utils/scopeguard.h"
 
 Acceptor::Acceptor()
 {
@@ -125,7 +126,7 @@ void Acceptor::HandleInput()
 	}
 
 	// guard
-	//ScopeGuard closeguard = MakeGuard(::close, handle);
+	ScopeGuard closeguard = MakeGuard(::close, handle);
 
 	SockAddr stRemoteAddr;
 	if ( stAddr.generic.sa_family == AF_LOCAL ) {
@@ -134,6 +135,8 @@ void Acceptor::HandleInput()
 	else {
 		stRemoteAddr.Assign((sockaddr*)&stAddr);
 	}
+
+	log(LOG_DEBUG, "accept connet from %s", stRemoteAddr.ToString().c_str());
 
 	if (OnAccept(handle, stRemoteAddr) != 0) {
 		return;
@@ -152,7 +155,7 @@ void Acceptor::HandleInput()
 	}
 
 	OnConnected(handler);
-	//closeguard.Dismiss();
+	closeguard.Dismiss();
 }
 
 int Acceptor::OnAccept(Handle, const SockAddr &)

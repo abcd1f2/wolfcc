@@ -8,6 +8,20 @@ class Package;
 class Allocator;
 class PackageManager;
 
+enum 
+{
+    TEXT_PACKLEN_LEN = 4,
+    TEXT_PACKAGE_MAXLEN = 0xffff,
+    BINARY_PACKLEN_LEN = 2,
+    BINARY_PACKAGE_MAXLEN = 0xffff,
+};
+
+enum 
+{
+	BINARY_PACKAGE_STREAM_PROTOCOL_1_0 = 1,
+	TEXT_PACKAGE_STREAM_PROTOCOL_1_0
+};
+
 class Procpack
 {
 public:
@@ -26,27 +40,69 @@ protected:
     ErrorCallback*	errorcb_p_;
 };
 
-typedef Queue<Package*> PackageQueue;
 class TextStreamProcpack : public Procpack
 {
 public:
-    TextStreamProcpack(PackageQueue* queue, Allocator* allocator, PackageManager *  pPackageManager, int protocol);
+    virtual ~TextStreamProcpack(){}
+
+public:
+    virtual int Extract(size_t sockid, size_t processorid, const char* ptr, size_t len, const SockAddr& addr);
+};
+
+class BinaryStreamProcpack : public Procpack
+{
+public:
+    virtual ~BinaryStreamProcpack(){}
+
+public:
+    virtual int Extract(size_t sockid, size_t processorid, const char* ptr, size_t len, const SockAddr& addr);
+};
+
+
+typedef Queue<Package*> PackageQueue;
+class AppTextStreamProcpack : public TextStreamProcpack
+{
+public:
+    AppTextStreamProcpack(PackageQueue* queue, Allocator* allocator, PackageManager *pPackageManager, int protocol);
+    virtual ~AppTextStreamProcpack(){}
 
 public:
     void SetQueueLimit(size_t queuelimit) {
-        this->queuelimit = queuelimit;
+        this->queuelimit_ = queuelimit;
     }
 
 public:
-    virtual int OnPackage(size_t sockid, size_t proessorid, const char* ptr, size_t len, const SockAddr& addr);
-    virtual int Extract(size_t sockid, size_t processorid, const char* ptr, size_t len, const SockAddr& addr);
+    virtual int OnPackage(size_t sockid, size_t processorid, const char* ptr, size_t len, const SockAddr& addr);
 
 private:
     PackageQueue*  queuepackage_p_;
     Allocator* allocator_p_;
     PackageManager *  packageManager_p_;
-    size_t       queuelimit;
-    int			protocol;
+    size_t       queuelimit_;
+    int			protocol_;
+};
+
+
+class AppBinaryStreamProcpack : public BinaryStreamProcpack
+{
+public:
+    AppBinaryStreamProcpack(PackageQueue* queue, Allocator* allocator, PackageManager *pPackageManager, int protocol);
+    virtual ~AppBinaryStreamProcpack(){}
+
+public:
+    void SetQueueLimit(size_t queuelimit) {
+        this->queuelimit_ = queuelimit;
+    }
+
+public:
+    virtual int OnPackage(size_t sockid, size_t processorid, const char* ptr, size_t len, const SockAddr& addr);
+
+private:
+    PackageQueue*  queuepackage_p_;
+    Allocator* allocator_p_;
+    PackageManager *  packageManager_p_;
+    size_t       queuelimit_;
+    int			protocol_;
 };
 
 #endif

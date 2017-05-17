@@ -41,26 +41,24 @@ bool ServerConfig::LoadConfig()
         return false;
     }
     
-    g_wolfserver.version = cfg.lookup("version");
+    version_ = cfg.lookup("version");
 
-    g_wolfserver.log_file = cfg.lookup("log.log_file");
-    g_wolfserver.log_level = cfg.lookup("log.log_level");
+    log_file_ = cfg.lookup("log.log_file");
+    log_level_ = cfg.lookup("log.log_level");
+
+	Log::SetLogLevel(log_level_);
+	Log::SetLogName(log_file_);
 
     const Setting &server = cfg.lookup("server");
     int c = server.getLength();
     for (int i = 0; i < c; i++) {
-        std::string add;
-        int port;
-        if (!server[i].lookupValue("addr", add) ||
-            !server[i].lookupValue("port", port)) {
-            log(LOG_FATAL, "read addr and port error");
+		if (!(server[i].lookupValue("tcp_inet", server_tcp_addr_) || 
+			server[i].lookupValue("unix_inet", server_unix_addr_))) {
+            log(LOG_FATAL, "read tcp and unix error");
             return false;
         }
-
-        g_wolfserver.bindaddr.push_back(add);
-        g_wolfserver.port.push_back(port);
-        g_wolfserver.bindaddr_count++;
     }
+	log(LOG_DEBUG, "tcp %s, unix %s", server_tcp_addr_.c_str(), server_unix_addr_.c_str());
 
     return true;
 }

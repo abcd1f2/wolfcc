@@ -9,7 +9,7 @@
 class Allocator;
 class DataBlock;
 
-class Package
+class Package : public Destroyable
 {
 public:
     Package();
@@ -46,7 +46,6 @@ public:
     virtual size_t GetSize() const;
 
 private:
-
     Allocator* allocator;
     size_t      handlerid;
     size_t      processorid;

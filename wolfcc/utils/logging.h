@@ -1,6 +1,7 @@
 #ifndef __WOLFCC_LOGGING_H__
 #define __WOLFCC_LOGGING_H__
 #include <stdint.h>
+#include <string>
 
 enum severity
 {
@@ -33,8 +34,13 @@ public:
         return Log::log_level_;
     }
 
+	static void SetLogName(const std::string& name) {
+		Log::log_name_ = name;
+	}
+
 public:
     static int log_level_;
+	static std::string log_name_;
 };
 
 #ifdef _HAS_TRACE_
@@ -44,6 +50,7 @@ public:
 #endif
 
 int Log::log_level_ = 1;
+std::string Log::log_name_ = "";
 
 #define log(p, fmt, ...) \
     (p < Log::GetLogLevel()) ? (void) 0 : Log::Printf(p, __FILE__, __LINE__, fmt, ##__VA_ARGS__)

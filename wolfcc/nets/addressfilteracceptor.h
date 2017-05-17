@@ -1,5 +1,5 @@
-#ifndef ADDRESS_FILTER_ACCEPTOR_H_
-#define ADDRESS_FILTER_ACCEPTOR_H_
+#ifndef __WOLFCC_ADDRESS_FILTER_ACCEPTOR_H_
+#define __WOLFCC_ADDRESS_FILTER_ACCEPTOR_H_
 #include "nets/connecteventhandler.h"
 #include "pros/procpack.h"
 #include "nets/acceptor.h"
@@ -20,7 +20,7 @@ public:
 
     void SetLimitAddresses(const std::list<std::string>* addresses)
     {
-        limitaddresses = addresses;
+        limitaddresses_ = addresses;
     }
 
     virtual void call(Destroyable* handler);
@@ -31,7 +31,6 @@ public:
     }
 
 protected:
-
     virtual EventHandler* CreateHandler(const SockAddr& addr);
 
     virtual void DestroyHandler(EventHandler* handler);
@@ -47,7 +46,7 @@ private:
     HandlerRegistry*  registry;
     size_t            timeout;
 
-    const std::list<std::string>* limitaddresses;
+    const std::list<std::string>* limitaddresses_;
 };
 
 #endif

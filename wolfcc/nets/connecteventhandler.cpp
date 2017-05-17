@@ -9,20 +9,20 @@
 #include "utils/logging.h"
 #include "utils/queue.h"
 
-AcfEventHandler::AcfEventHandler()
+ConnectEventHandler::ConnectEventHandler()
     : timeout(0), extractor(0)
 {
     
 }
 
-AcfEventHandler::~AcfEventHandler()
+ConnectEventHandler::~ConnectEventHandler()
 {
     
 }
 
 int time_interval(const timeval& t1, const timeval& t2);
 
-int AcfEventHandler::Open()
+int ConnectEventHandler::Open()
 {
     sendbuffer.Clear();
     recvbuffer.Clear();
@@ -35,12 +35,12 @@ int AcfEventHandler::Open()
     return GetReactor()->RegisterHandler(ReadMask, this, &tv);
 }
 
-int AcfEventHandler::Close()
+int ConnectEventHandler::Close()
 {
     return GetReactor()->RemoveHandler(ReadMask | WriteMask, this);
 }
 
-void AcfEventHandler::HandleInput()
+void ConnectEventHandler::HandleInput()
 {
     const int RECV_SIZE = 16384;
 
@@ -93,7 +93,7 @@ void AcfEventHandler::HandleInput()
     }
 }
 
-void AcfEventHandler::HandleOutput()
+void ConnectEventHandler::HandleOutput()
 {
     if (sendbuffer.GetSize() <= 0)
         return;
@@ -159,13 +159,13 @@ void AcfEventHandler::HandleOutput()
     }
 }
 
-void AcfEventHandler::HandleTimeout(void *)
+void ConnectEventHandler::HandleTimeout(void *)
 {
     log(LOG_DEBUG, "Connection timeout, remove all events");
     Close();
 }
 
-void AcfEventHandler::HandleClose()
+void ConnectEventHandler::HandleClose()
 {
     log(LOG_DEBUG, "Connection closed");
 
@@ -173,7 +173,7 @@ void AcfEventHandler::HandleClose()
     EventHandler::HandleClose();
 }
 
-void AcfEventHandler::Send(const char* data, size_t len)
+void ConnectEventHandler::Send(const char* data, size_t len)
 {
     sendbuffer.Append(data, len);
     HandleOutput();

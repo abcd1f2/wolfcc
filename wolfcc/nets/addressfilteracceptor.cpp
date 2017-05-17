@@ -19,7 +19,7 @@ AddressFilteredAcceptor::AddressFilteredAcceptor(
     extractor(extractor_),
     registry(registry_),
     timeout(3),
-    limitaddresses(NULL)
+    limitaddresses_(NULL)
 {
 
 }
@@ -66,16 +66,15 @@ int AddressFilteredAcceptor::OnAccept(Handle handle, const SockAddr& addr)
 
 bool AddressFilteredAcceptor::ValidAddress(const char* clientip)
 {
-    if (!limitaddresses)
-        return true;
+	if (!limitaddresses_) {
+		return true;
+	}
 
     std::list<std::string>::const_iterator iter;
-    for (iter = limitaddresses->begin();
-        iter != limitaddresses->end();
-        ++iter)
-    {
+    for (iter = limitaddresses_->begin(); iter != limitaddresses_->end(); ++iter) {
         if (strncmp(clientip, iter->c_str(), iter->length()) == 0)
             return true;
     }
+
     return false;
 }

@@ -1,22 +1,53 @@
 ﻿#ifndef __WOLFCC_PACKPROCESSOR_H__
 #define __WOLFCC_PACKPROCESSOR_H__
 
-class PackProcessor
-{
-    virtual ~PackProcessor(){}
+struct Request;
+struct Response;
 
-    virtual int Process(Request* request, Responce* responce) = 0;
+enum 
+{
+	PROCESSOR_PROTOCOL_MESSAGEPACK = 1,
+	PROCESSOR_PROTOCOL_PROTOBUF
 };
 
-class Processor : public PackProcessor
+class Processor
 {
 public:
-    //virtual int Process(ReadStream* inputstream, WriteStream* outputstream);
-    virtual int Process(Request* request, Responce* responce);
+    virtual ~Processor(){}
 
-    bool AppendDataToCache(char *key, char *bdbname, const char *value, int valuelen, int realcount = 10, int limitcount = 20);
-    int GetCutStart(int cutcount, const char *output, int outlen);
+public:
+    virtual int Process(Request* request, Response* responce) = 0;
+};
+
+class PackProcessor : public Processor
+{
+public:
+    virtual ~PackProcessor(){}
+
+public:
+    virtual int Process(Request* request, Response* responce){}
+
+    bool AppendDataToCache(char *key, char *bdbname, const char *value, int valuelen, int realcount = 10, int limitcount = 20){}
+    int GetCutStart(int cutcount, const char *output, int outlen){}
 private:
+};
+
+class MessagepackProcessor : public Processor
+{
+public:
+	virtual ~MessagepackProcessor(){}
+
+public:
+	virtual int Process(Request* request, Response* responce);
+};
+
+class ProtoBufProcessor : public Processor
+{
+public:
+	virtual ~ProtoBufProcessor(){}
+
+public:
+	virtual int Process(Request* request, Response* responce);
 };
 
 #endif

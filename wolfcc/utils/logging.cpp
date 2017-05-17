@@ -5,7 +5,7 @@
 
 void Log::Printf(int level, const char *file, int32_t line, const char *fmt, ...)
 {
-    if (level < g_wolfserver.log_level || level >= LOG_MAX) {
+    if (level < Log::GetLogLevel() || level >= LOG_MAX) {
         return;
     }
 
@@ -16,7 +16,7 @@ void Log::Printf(int level, const char *file, int32_t line, const char *fmt, ...
     va_end(ap);
 
     FILE *fp = NULL;
-    fp = g_wolfserver.log_file.empty() ? stdout : fopen(g_wolfserver.log_file.c_str(), "a");
+	fp = Log::log_name_.empty() ? stdout : fopen(Log::log_name_.c_str(), "ab");
     if (!fp) {
         fprintf(stderr, "open log file error");
         return;
@@ -30,5 +30,8 @@ void Log::Printf(int level, const char *file, int32_t line, const char *fmt, ...
 
     fprintf(fp, "[%s] [%s] [%s:%d] %s\n", logLevelMap[level], buf, file, line, msg);
     fflush(fp);
-    fclose(fp);
+
+	if (!Log::log_name_.empty()) {
+		fclose(fp);
+	}
 }

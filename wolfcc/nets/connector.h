@@ -1,4 +1,4 @@
-#ifndef __WOLFCC_CONNECTOR_H__
+﻿#ifndef __WOLFCC_CONNECTOR_H__
 #define __WOLFCC_CONNECTOR_H__
 #include <sys/time.h>
 #include "nets/eventhandler.h"

@@ -1,4 +1,4 @@
-#include <sys/time.h>
+﻿#include <sys/time.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -7,6 +7,7 @@
 #include "nets/connector.h"
 #include "nets/reactor.h"
 #include "nets/socket.h"
+#include "utils/scopeguard.h"
 
 using namespace std;
 
@@ -44,41 +45,40 @@ int Connector::Open()
 		return -1;
 	}
 
+    ScopeGuard CloseFd = MakeObjGuard(connfd_, &Socket::Close);
+
 	if ( connfd_.SetBlocking(false) != 0 ) {
         log(LOG_ERR, "set socket nonblock error! %zd %s", errno, strerror(errno));
-        goto err;
+        return -1;
 	}
 
 	if ( stRemoteAddr_.GetFamily() == AF_INET && stLocalAddr_ != INetAddr::ANY_ADDR ) {
 		if ( connfd_.Bind(stLocalAddr_.GetSockAddrPtr(), stLocalAddr_.GetSockAddrSize()) != 0 ) {
             log(LOG_ERR, "bind socket to [%s] error! %zd %s", stLocalAddr_.ToString().c_str(), errno, strerror(errno));
-            goto err;
+            return -1;
 		}
 	}
 
 	int ret = connfd_.Connect(stRemoteAddr_.GetSockAddrPtr(), stRemoteAddr_.GetSockAddrSize(), 0);
 	if ( ret != 0 && errno != EINPROGRESS ) {
         log(LOG_ERR, "connect socket to [%s] error! %zd %s", stRemoteAddr_.ToString().c_str(), errno, strerror(errno));
-        goto err;
+        return -1;
 	}
 
 	if ( stRemoteAddr_.GetFamily() == AF_INET && connfd_.SetDelay(false) != 0) {
         log(LOG_ERR, "set non-delay fail: %s", strerror(errno));
-        goto err;
+        return -1;
 	}    
 
 	SetHandle(connfd_.GetHandle());
 
 	if (GetReactor()->RegisterHandler(WriteMask, this, time_) != 0) {
 		log(LOG_ERR, "register socket error");
-        goto err;
+        return -1;
 	}
 
+    CloseFd.Dismiss();
     return 0;
-
-err:
-    connfd_.Close();
-    return -1;
 }
 
 int Connector::Close()
@@ -103,6 +103,9 @@ void Connector::HandleOutput()
 {
 	int error;
 	socklen_t len = sizeof(error);
+
+    ScopeGuard CloseThis = MakeObjGuard(*this, &Connector::Close);
+    (void)CloseThis;
 
 	int ret = getsockopt(connfd_.GetHandle(), SOL_SOCKET, SO_ERROR, &error, &len);	
 	if ( ret < 0 ) {
