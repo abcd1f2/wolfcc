@@ -15,10 +15,8 @@ add_library(wolfccbase static
     nets/eventhandler.cpp
     nets/inetaddr.cpp
     nets/libeventreactor.cpp
-    nets/networkbase.cpp
     nets/pusheventhandler.cpp
     nets/reactor.cpp
-    nets/selectreactor.cpp
     nets/sockaddr.cpp
     nets/socket.cpp
     nets/socketpairhandler.cpp
@@ -44,11 +42,11 @@ add_library(wolfccbase static
     utils/wtime.cpp
 )
 
-add_executable($(executable_name)
+add_executable(${executable_name}
     backgroudio.cpp
     configmanager.cpp
     dbmanager.cpp
-    netmanager.cpp
+    #netmanager.cpp
     serverapp.cpp
     wolfcc.cpp
 )

@@ -2,11 +2,11 @@
 #include <string.h>
 #include <new>
 #include <list>
+#include <event.h>
 #include "nets/libeventreactor.h"
 #include "nets/eventhandler.h"
 #include "utils/logging.h"
 #include "nets/event.h"
-#include "event.h"
 
 /* private data */
 struct TimerData

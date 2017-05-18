@@ -23,7 +23,7 @@ class WorkThreadPool : public ThreadPool
 {
 	Queue<Package*>*  recvqueue_p_;
 	Queue<Package*>*  sendqueue_p_;
-	std::map<size_t, Processor*>* processors_p_;
+	std::map<uint32_t, Processor*>* processors_p_;
 	PackageManager *      pPackageManager_p_;
 	Allocator*        allocator_p_;
 	PackageLogLevel       debuglevel;
@@ -32,7 +32,7 @@ class WorkThreadPool : public ThreadPool
 public:
 	WorkThreadPool(Queue<Package*>* recvqueue,
 		Queue<Package*>* sendqueue,
-		std::map<size_t, Processor*>* processors,
+		std::map<uint32_t, Processor*>* processors,
 		PackageManager * pPackageManager,
 		Allocator* allocator = Allocator::Instance());
 
@@ -51,10 +51,10 @@ protected:
 	virtual void StopThreads(size_t stopcount);
 
 private:
-	ReadStream* CreateReadStream(int protocol, const char* p, size_t len);
+	ReadStream* CreateReadStream(int protocol, const char* p, uint32_t len);
 	void DestroyReadStream(int protocol, ReadStream* readStram);
 
-	WriteStream* CreateWriteStream(int protocol, char* buf, size_t buflen);
+	WriteStream* CreateWriteStream(int protocol, char* buf, uint32_t buflen);
 	void DestroyWriteStream(int protocol, WriteStream* writeStram);
 
 	bool ProcessProtocol(Processor* processor, Package* package);

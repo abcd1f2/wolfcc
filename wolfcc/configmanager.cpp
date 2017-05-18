@@ -1,26 +1,13 @@
 #include <libconfig.h++>
-#include "configmanager.h"
-#include "attrib.h"
 #include "utils/logging.h"
+#include "configmanager.h"
 
 using namespace libconfig;
 
-ConfigManager::ConfigManager(const std::string& path) :
+ServerConfig::ServerConfig(const std::string& path) :
     file_path_(path)
 {
     
-}
-
-ConfigManager::~ConfigManager()
-{
-
-}
-
-
-ServerConfig::ServerConfig(const std::string& path) :
-    ConfigManager(path)
-{
-
 }
 
 ServerConfig::~ServerConfig()
@@ -41,10 +28,13 @@ bool ServerConfig::LoadConfig()
         return false;
     }
     
-    version_ = cfg.lookup("version");
+	if (!cfg.lookupValue("version", version_)) {
+		log(LOG_ERR, "wolfcc have no version");
+	}
 
-    log_file_ = cfg.lookup("log.log_file");
-    log_level_ = cfg.lookup("log.log_level");
+	if (!cfg.lookupValue("log.log_file", log_file_) || !cfg.lookupValue("log.log_level", log_level_)) {
+		log(LOG_ERR, "log have no file or level");
+	}
 
 	Log::SetLogLevel(log_level_);
 	Log::SetLogName(log_file_);

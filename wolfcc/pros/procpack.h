@@ -2,11 +2,11 @@
 #define __WOLFCC_PROCPACK_H__
 #include "nets/sockaddr.h"
 #include "utils/queue.h"
+#include "pros/package.h"
 
 class ErrorCallback;
 class Package;
 class Allocator;
-class PackageManager;
 
 enum 
 {

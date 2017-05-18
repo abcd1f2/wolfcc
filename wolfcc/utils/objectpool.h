@@ -38,7 +38,7 @@ public:
         }
 
         for (typename::std::vector<T *>::iterator pos = Chunks_.begin(); pos != Chunks_.end(); ++pos) {
-            pAllocator_->Deallocate(*pos);
+			allocator_p_->Deallocate(*pos);
         }
     }
 

@@ -169,7 +169,7 @@ const char* TextReadStream::GetData() const
 
 size_t TextReadStream::ReadAll(char * szBuffer, size_t iLen) const
 {
-	size_t iRealLen = min(iLen, len);
+	size_t iRealLen = std::min(iLen, len);
 	memcpy(szBuffer, ptr, iRealLen);
 	return iRealLen;
 }
@@ -543,7 +543,7 @@ const char* BinaryReadStream::GetData() const
 
 size_t BinaryReadStream::ReadAll(char * szBuffer, size_t iLen) const
 {
-	size_t iRealLen = min(iLen, len);
+	size_t iRealLen = std::min(iLen, len);
 	memcpy(szBuffer, ptr, iRealLen);
 	return iRealLen;
 }

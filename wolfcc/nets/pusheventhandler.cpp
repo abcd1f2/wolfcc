@@ -6,6 +6,7 @@
 #include "utils/logging.h"
 #include "utils/handlerregistry.h"
 #include "pros/package.h"
+#include "nets/connecteventhandler.h"
 
 int time_interval(const timeval& t1, const timeval& t2)
 {
@@ -18,7 +19,7 @@ void PushEventHandler::HandleEvent()
     while (queue_p_->Pop(p) == 0)
     {
         gettimeofday(&p->gettime2, NULL);
-        AcfEventHandler* handler = dynamic_cast<AcfEventHandler*>(registry_p_->GetHandler(p->GetHandlerId()));
+		ConnectEventHandler* handler = dynamic_cast<ConnectEventHandler*>(registry_p_->GetHandler(p->GetHandlerId()));
         if (!handler) {
             log(LOG_WARN, "Handler not found, maybe it disconnected");
         }

@@ -9,12 +9,14 @@
 #include "nets/pusheventhandler.h"
 #include "utils/workthreadpool.h"
 #include "utils/errorcallback.h"
+#include "utils/objectpool.h"
 #include "configmanager.h"
 
 class AddressFilteredAcceptor;
 class Reactor;
 class PackProcessor;
 class Processor;
+class Acceptor;
 
 class ServerApp
 {

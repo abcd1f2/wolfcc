@@ -10,7 +10,7 @@ template<class T>
 class Queue
 {
 public:
-    Queue() : notify(0) {}
+	Queue() : notify_p_(NULL) {}
 
     virtual ~Queue() {}
 
@@ -54,13 +54,13 @@ public:
 public:
     SyncQueue(size_t limit = DEFAULT_LIMIT)
         : limit_(limit), count_(0) {
-        pthread_mutex_init(&mutex, NULL);
-        pthread_cond_init(&cond, NULL);
+        pthread_mutex_init(&mutex_, NULL);
+        pthread_cond_init(&cond_, NULL);
     }
 
     virtual ~SyncQueue() {
-        pthread_cond_destroy(&cond);
-        pthread_mutex_destroy(&mutex);
+        pthread_cond_destroy(&cond_);
+        pthread_mutex_destroy(&mutex_);
     }
 
     virtual size_t GetSize() const {
@@ -125,7 +125,7 @@ protected:
     mutable pthread_mutex_t mutex_;
     mutable pthread_cond_t  cond_;
 
-    std::list<T, __gnu_cxx::__pool_alloc<T> > queue_;
+    std::list<T> queue_;
     size_t	limit_;
     size_t	count_;
 };

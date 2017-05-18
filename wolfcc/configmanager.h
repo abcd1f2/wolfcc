@@ -10,12 +10,13 @@ class ServerConfig
 {
 public:
     ServerConfig(const std::string& path);
-	~ServerConfig(){}
+	~ServerConfig();
 
 public:
     virtual bool LoadConfig();
 
 public:
+	std::string config_file_path_;
     pid_t pid;          /* Main process pid. */
 
     //net

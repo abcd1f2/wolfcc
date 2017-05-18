@@ -1,4 +1,5 @@
 ﻿#include "utils/handlerregistry.h"
+#include "nets/eventhandler.h"
 
 EventHandler* HandlerRegistry::GetHandler(size_t id) const
 {

@@ -163,7 +163,7 @@ bool ServerApp::Listen(const SockAddr& addr, int protocol, Processor* processor,
 	return true;
 }
 
-bool ServerApp::Listen(const SockAddr& addr, int protocol, uint32_t processorid, std::list<std::string>* limitaddresses = NULL, uint32_t timeout = 3)
+bool ServerApp::Listen(const SockAddr& addr, int protocol, uint32_t processorid, std::list<std::string>* limitaddresses /*= NULL*/, uint32_t timeout/* = 3*/)
 {
 	Procpack *stream_protocol_p = NULL;
 	if (protocol == BINARY_PACKAGE_STREAM_PROTOCOL_1_0) {

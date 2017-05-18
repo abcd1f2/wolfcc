@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <assert.h>
+#include <stdio.h>
 #include "nets/acceptor.h"
 #include "nets/reactor.h"
 #include "nets/socket.h"

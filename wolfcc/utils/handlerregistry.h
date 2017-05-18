@@ -1,8 +1,9 @@
-﻿#ifndef __WOLFCC_HANDLERREGISTRY_H__
+#ifndef __WOLFCC_HANDLERREGISTRY_H__
 #define __WOLFCC_HANDLERREGISTRY_H__
-#include <ctype.h>
 #include <map>
-#include "nets/eventhandler.h"
+#include <cstddef>
+
+class EventHandler;
 
 class HandlerRegistry
 {

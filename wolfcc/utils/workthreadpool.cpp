@@ -74,7 +74,7 @@ size_t GetProtocolMaxSize(int protocol) {
 WorkThreadPool::WorkThreadPool(
 	Queue<Package*>* packqueue_,
 	Queue<Package*>* resultqueue_,
-	std::map<size_t, Processor*>* processors_,
+	std::map<uint32_t, Processor*>* processors_,
 	PackageManager * pPackageManager_,
 	Allocator* allocator_)
 	: recvqueue_p_(packqueue_), sendqueue_p_(resultqueue_), processors_p_(processors_), pPackageManager_p_(pPackageManager_),
@@ -124,7 +124,7 @@ DataBlock* WorkThreadPool::CreateDataBlock()
 }
 
 
-ReadStream* WorkThreadPool::CreateReadStream(int protocol, const char* p, size_t len)
+ReadStream* WorkThreadPool::CreateReadStream(int protocol, const char* p, uint32_t len)
 {
 /*
 	if (protocol == SERIALNO_WRAPPER_PROTOCOL) {
@@ -178,7 +178,7 @@ void WorkThreadPool::DestroyReadStream(int protocol, ReadStream* readStream)
 	lst.push_back(readStream);*/
 }
 
-WriteStream* WorkThreadPool::CreateWriteStream(int protocol, char* buf, size_t buflen)
+WriteStream* WorkThreadPool::CreateWriteStream(int protocol, char* buf, uint32_t buflen)
 {
 /*
 	std::map<int, std::list<WriteStream*> >* cache
@@ -251,7 +251,7 @@ bool WorkThreadPool::RunOnce()
 	gettimeofday(&p->gettime, NULL);
 
 	size_t processorid = p->GetProcessorId();
-	std::map<size_t, Processor*>::const_iterator iter;
+	std::map<uint32_t, Processor*>::const_iterator iter;
 	iter = processors_p_->find(processorid);
 	if (iter == processors_p_->end()) {
 		log(LOG_ERR, "invalid processorid: %zu", processorid);
@@ -283,6 +283,7 @@ bool WorkThreadPool::ProcessProtocol(Processor* processor, Package* p)
 	DataBlock* db = CreateDataBlock();
 	db->Clear();
 
+/*
 	if (protocol == SERIALNO_WRAPPER_PROTOCOL) {
 		if (!ProcessSerialnoPackage(processor, p))
 			return false;
@@ -290,7 +291,7 @@ bool WorkThreadPool::ProcessProtocol(Processor* processor, Package* p)
 	else {
 		if (!ProcessPackage(processor, p))
 			return false;
-	}
+	}*/
 
 	return true;
 }
@@ -419,9 +420,9 @@ bool WorkThreadPool::ProcessPackage(Processor* processor, Package* p, Request* r
 	return true;
 }
 
-void WorkThreadPool::StopThreads(size_t stopcount)
+void WorkThreadPool::StopThreads(uint32_t stopcount)
 {
-	size_t i = 0;
+	uint32_t i = 0;
 	while (i != stopcount) {
 		if (recvqueue_p_->Push(0) != 0) {
 			usleep(20);

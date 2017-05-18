@@ -1,7 +1,9 @@
-#include "utils/logging.h"
 #include <sys/time.h>
 #include <time.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
+#include "utils/logging.h"
 
 void Log::Printf(int level, const char *file, int32_t line, const char *fmt, ...)
 {
