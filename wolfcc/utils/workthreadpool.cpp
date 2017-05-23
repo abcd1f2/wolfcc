@@ -420,9 +420,9 @@ bool WorkThreadPool::ProcessPackage(Processor* processor, Package* p, Request* r
 	return true;
 }
 
-void WorkThreadPool::StopThreads(uint32_t stopcount)
+void WorkThreadPool::StopThreads(size_t stopcount)
 {
-	uint32_t i = 0;
+	size_t i = 0;
 	while (i != stopcount) {
 		if (recvqueue_p_->Push(0) != 0) {
 			usleep(20);

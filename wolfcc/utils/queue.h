@@ -15,7 +15,7 @@ public:
     virtual ~Queue() {}
 
     void SetNotification(Notification* notify) { 
-        this->notify = notify_p_;
+        this->notify_p_ = notify;
     }
 
     Notification* GetNotification() { 

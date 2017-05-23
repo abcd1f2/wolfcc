@@ -30,10 +30,6 @@ public:
         Log::log_level_ = level;
     }
 
-    static int GetLogLevel() {
-        return Log::log_level_;
-    }
-
 	static void SetLogName(const std::string& name) {
 		Log::log_name_ = name;
 	}
@@ -49,10 +45,7 @@ public:
 #define log_trace() ((void)0)
 #endif
 
-int Log::log_level_ = 1;
-std::string Log::log_name_ = "";
-
 #define log(p, fmt, ...) \
-    (p < Log::GetLogLevel()) ? (void) 0 : Log::Printf(p, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
+	(p < Log::log_level_) ? (void)0 : Log::Printf(p, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
 #endif

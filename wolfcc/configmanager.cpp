@@ -5,7 +5,7 @@
 using namespace libconfig;
 
 ServerConfig::ServerConfig(const std::string& path) :
-    file_path_(path)
+	config_file_path_(path)
 {
     
 }
@@ -20,7 +20,7 @@ bool ServerConfig::LoadConfig()
     Config cfg;
     try
     {
-        cfg.readFile(file_path_);
+		cfg.readFile(config_file_path_.c_str());
     }
     catch (const std::exception &e)
     {

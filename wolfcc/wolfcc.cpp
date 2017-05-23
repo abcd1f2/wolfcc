@@ -4,7 +4,7 @@
 #include "utils/daemonize.h"
 #include "serverapp.h"
 
-static const char *g_config_name = "./wolfcc.conf"
+static const char *g_config_name = "./wolfcc.conf";
 
 int main(int argc, char **argv)
 {
