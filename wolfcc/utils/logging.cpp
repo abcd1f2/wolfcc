@@ -7,7 +7,7 @@
 
 void Log::Printf(int level, const char *file, int32_t line, const char *fmt, ...)
 {
-    if (level < Log::log_level_ || level >= LOG_MAX) {
+    if (level < log_level_ || level >= LOG_MAX) {
         return;
     }
 

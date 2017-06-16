@@ -25,27 +25,40 @@ public:
         LOG_MAX_LEN = 1024
     };
 
-    static void Printf(int level, const char *file, int32_t line, const char *fmt, ...);
-    static void SetLogLevel(int level) {
-        Log::log_level_ = level;
+    void Printf(int level, const char *file, int32_t line, const char *fmt, ...);
+    void SetLogLevel(int level) {
+        log_level_ = level;
     }
 
-	static void SetLogName(const std::string& name) {
-		Log::log_name_ = name;
+	void SetLogName(const std::string& name) {
+		log_name_ = name;
 	}
 
 public:
-    static int log_level_;
-	static std::string log_name_;
+	static Log& GetInstance()
+	{
+		static Log l;
+		return l;
+	}
+
+private:
+	Log(){} // ctor hidden
+	Log(Log const&){} // copy ctor hidden
+	Log& operator=(Log const&){} // assign op. hidden
+	~Log(){} // dtor hidden
+
+private:
+    int log_level_;
+	std::string log_name_;
 };
 
 #ifdef _HAS_TRACE_
-#define log_trace() Log::Printf(LOG_TRACE, __FILE__, __LINE__, "%s", __PRETTY_FUNCTION__)
+#define log_trace() Log::GetInstance().Printf(LOG_TRACE, __FILE__, __LINE__, "%s", __PRETTY_FUNCTION__)
 #else
 #define log_trace() ((void)0)
 #endif
 
 #define log(p, fmt, ...) \
-	(p < Log::log_level_) ? (void)0 : Log::Printf(p, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
+	(p < Log::log_level_) ? (void)0 : Log::GetInstance().Printf(p, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
 #endif
