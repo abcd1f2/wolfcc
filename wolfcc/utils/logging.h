@@ -34,6 +34,8 @@ public:
 		log_name_ = name;
 	}
 
+	int GetLogLevel() const { return log_level_; }
+
 public:
 	static Log& GetInstance()
 	{
@@ -59,6 +61,6 @@ private:
 #endif
 
 #define log(p, fmt, ...) \
-	(p < Log::log_level_) ? (void)0 : Log::GetInstance().Printf(p, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
+	(p < Log::GetInstance().GetLogLevel()) ? (void)0 : Log::GetInstance().Printf(p, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
 #endif
