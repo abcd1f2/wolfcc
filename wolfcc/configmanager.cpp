@@ -36,8 +36,8 @@ bool ServerConfig::LoadConfig()
 		log(LOG_ERR, "log have no file or level");
 	}
 
-	Log::SetLogLevel(log_level_);
-	Log::SetLogName(log_file_);
+	Log::GetInstance().SetLogLevel(log_level_);
+	Log::GetInstance().SetLogName(log_file_);
 
     const Setting &server = cfg.lookup("server");
     int c = server.getLength();
