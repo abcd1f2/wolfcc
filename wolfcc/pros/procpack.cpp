@@ -62,6 +62,11 @@ int BinaryStreamProcpack::Extract(size_t sockid, size_t processorid, const char*
     }
 }
 
+AppTextStreamProcpack::AppTextStreamProcpack(PackageQueue* queue, Allocator* allocator, PackageManager *pPackageManager, int protocol)
+{
+
+}
+
 int AppTextStreamProcpack::OnPackage(size_t sockid, size_t processorid, const char* ptr, size_t len, const SockAddr& addr)
 {
     if (queuelimit_ > 0 && queuepackage_p_->GetSize() >= queuelimit_) {
@@ -99,6 +104,11 @@ int AppTextStreamProcpack::OnPackage(size_t sockid, size_t processorid, const ch
     gettimeofday(&pack->puttime, NULL);
 
     return 0;
+}
+
+AppBinaryStreamProcpack::AppBinaryStreamProcpack(PackageQueue* queue, Allocator* allocator, PackageManager *pPackageManager, int protocol)
+{
+
 }
 
 int AppBinaryStreamProcpack::OnPackage(size_t sockid, size_t proessorid, const char* ptr, size_t len, const SockAddr& addr)

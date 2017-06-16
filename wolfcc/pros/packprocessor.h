@@ -35,6 +35,7 @@ private:
 class MessagepackProcessor : public Processor
 {
 public:
+	MessagepackProcessor(){}
 	virtual ~MessagepackProcessor(){}
 
 public:
@@ -44,6 +45,7 @@ public:
 class ProtoBufProcessor : public Processor
 {
 public:
+	ProtoBufProcessor(){}
 	virtual ~ProtoBufProcessor(){}
 
 public:
