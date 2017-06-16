@@ -18,7 +18,7 @@ void Log::Printf(int level, const char *file, int32_t line, const char *fmt, ...
     va_end(ap);
 
     FILE *fp = NULL;
-	fp = Log::log_name_.empty() ? stdout : fopen(Log::log_name_.c_str(), "ab");
+	fp = log_name_.empty() ? stdout : fopen(log_name_.c_str(), "ab");
     if (!fp) {
         fprintf(stderr, "open log file error");
         return;

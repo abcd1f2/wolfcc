@@ -32,11 +32,11 @@ bool ServerConfig::LoadConfig()
 		log(LOG_ERR, "wolfcc have no version");
 	}
 
-	if (!cfg.lookupValue("log.log_file", log_file_) || !cfg.lookupValue("log.log_level", log_level_)) {
+	if (!cfg.lookupValue("log.log_file", log_file_) || !cfg.lookupValue("log.log_level", c_log_level_)) {
 		log(LOG_ERR, "log have no file or level");
 	}
 
-	Log::GetInstance().SetLogLevel(log_level_);
+	Log::GetInstance().SetLogLevel(c_log_level_);
 	Log::GetInstance().SetLogName(log_file_);
 
     const Setting &server = cfg.lookup("server");

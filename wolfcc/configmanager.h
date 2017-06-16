@@ -46,7 +46,7 @@ public:
     int shutdown_asap;          /* SHUTDOWN needed ASAP */
 
     //common
-    int32_t log_level_;
+    int32_t c_log_level_;
     std::string log_file_;
     bool daemonize_;
     std::string version_;
