@@ -39,7 +39,7 @@ public:
 	virtual ~MessagepackProcessor(){}
 
 public:
-	virtual int Process(Request* request, Response* responce);
+	virtual int Process(Request* request, Response* responce){}
 };
 
 class ProtoBufProcessor : public Processor
@@ -49,7 +49,7 @@ public:
 	virtual ~ProtoBufProcessor(){}
 
 public:
-	virtual int Process(Request* request, Response* responce);
+	virtual int Process(Request* request, Response* responce){}
 };
 
 #endif
